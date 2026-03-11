@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard - Lost & Found Portal</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">🔍</span>
+        <span class="logo-text">Lost & Found</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="browse.html" class="nav-link">Browse</a>
+        <a href="dashboard.html" class="nav-link active">Dashboard</a>
+        <button onclick="logoutUser()" class="btn-secondary">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard -->
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <ul class="sidebar-menu">
+        <li class="sidebar-item">
+          <a href="dashboard.html" class="sidebar-link active">
+            <span class="sidebar-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="my-lost-items.html" class="sidebar-link">
+            <span class="sidebar-icon">📱</span>
+            My Lost Items
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="my-found-items.html" class="sidebar-link">
+            <span class="sidebar-icon">✨</span>
+            My Found Items
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="matches.html" class="sidebar-link">
+            <span class="sidebar-icon">🎯</span>
+            Matches
+            <span style="background: var(--primary-color); color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: auto;">2</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="messages.html" class="sidebar-link">
+            <span class="sidebar-icon">💬</span>
+            Messages
+            <span style="background: var(--primary-color); color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; margin-left: auto;">3</span>
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="notifications.html" class="sidebar-link">
+            <span class="sidebar-icon">🔔</span>
+            Notifications
+          </a>
+        </li>
+        <li class="sidebar-item" style="margin-top: 30px;">
+          <a href="report-lost.html" class="sidebar-link">
+            <span class="sidebar-icon">➕</span>
+            Report Lost
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="report-found.html" class="sidebar-link">
+            <span class="sidebar-icon">✅</span>
+            Report Found
+          </a>
+        </li>
+        <li class="sidebar-item" style="margin-top: 30px;">
+          <a href="profile.html" class="sidebar-link">
+            <span class="sidebar-icon">👤</span>
+            Profile
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <span class="sidebar-icon">⚙️</span>
+            Settings
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-content">
+      <div class="dashboard-header">
+        <div>
+          <h1 class="dashboard-title" id="dashboardGreeting">Welcome Back!</h1>
+          <p style="color: var(--text-secondary);">Here's what's happening with your items</p>
+        </div>
+        <div class="dashboard-actions">
+          <a href="report-lost.html" class="btn-primary">+ Report Lost</a>
+          <a href="report-found.html" class="btn-secondary">+ Report Found</a>
+        </div>
+      </div>
+
+      <!-- Verification Alert if not verified -->
+      <div id="verificationAlert" style="display: none; margin-bottom: 30px; background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.3); border-left: 4px solid var(--warning-color); padding: 20px 24px; border-radius: var(--radius-lg);">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <span style="font-size: 32px;">⚠️</span>
+          <div style="flex: 1;">
+            <h3 style="font-size: 18px; margin-bottom: 6px; color: var(--text-primary);">Verification Required</h3>
+            <p style="color: var(--text-secondary); font-size: 14px;">
+              Please verify your email or phone number to report items. <a href="profile.html" style="color: var(--primary-light); font-weight: 600;">Verify Now →</a>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats Cards -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon primary">📱</div>
+          <div class="stat-info">
+            <h3>5</h3>
+            <p>Lost Items Reported</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon success">✨</div>
+          <div class="stat-info">
+            <h3>3</h3>
+            <p>Found Items Reported</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon warning">🎯</div>
+          <div class="stat-info">
+            <h3>2</h3>
+            <p>Active Matches</p>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon primary">✅</div>
+          <div class="stat-info">
+            <h3>4</h3>
+            <p>Items Recovered</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div style="background: var(--bg-card); backdrop-filter: blur(20px); padding: 30px; border-radius: var(--radius-lg); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); border: 1px solid var(--border-primary); margin-bottom: 30px;">
+        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 24px; color: var(--text-primary);">Recent Activity</h2>
+        
+        <div style="display: flex; flex-direction: column; gap: 20px;">
+          <div style="display: flex; gap: 16px; padding: 16px; background: rgba(139, 92, 246, 0.1); border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
+            <div style="font-size: 32px;">🎯</div>
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <strong style="color: var(--text-primary);">Possible match found!</strong>
+                <span style="font-size: 14px; color: var(--text-tertiary);">2 hours ago</span>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 14px;">Your lost iPhone 14 Pro might match a recently found item. <a href="matches.html" style="color: var(--primary-light); font-weight: 600;">View Match</a></p>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px; padding: 16px; background: rgba(6, 182, 212, 0.1); border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
+            <div style="font-size: 32px;">💬</div>
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <strong style="color: var(--text-primary);">New message received</strong>
+                <span style="font-size: 14px; color: var(--text-tertiary);">5 hours ago</span>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 14px;">Sarah Johnson sent you a message about your black wallet. <a href="messages.html" style="color: var(--primary-light); font-weight: 600;">Read Message</a></p>
+            </div>
+          </div>
+
+          <div style="display: flex; gap: 16px; padding: 16px; background: rgba(16, 185, 129, 0.1); border-radius: var(--radius-md); border: 1px solid var(--border-primary);">
+            <div style="font-size: 32px;">✅</div>
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                <strong style="color: var(--text-primary);">Verification complete</strong>
+                <span style="font-size: 14px; color: var(--text-tertiary);">1 day ago</span>
+              </div>
+              <p style="color: var(--text-secondary); font-size: 14px;">Your claim for the car keys has been verified. You can now chat with the finder.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- My Items -->
+      <div style="background: var(--bg-card); backdrop-filter: blur(20px); padding: 30px; border-radius: var(--radius-lg); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); border: 1px solid var(--border-primary);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+          <h2 style="font-size: 24px; font-weight: 700; color: var(--text-primary);">My Recent Items</h2>
+          <a href="my-lost-items.html" style="color: var(--primary-light); font-weight: 600;">View All →</a>
+        </div>
+        
+        <div class="items-grid" id="dashboardItems">
+          <!-- Items will be populated by JavaScript -->
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Check authentication
+    if (!requireAuth()) {
+      // Will redirect to login
+    } else {
+      // Update greeting with user name
+      const user = getCurrentUser();
+      if (user) {
+        document.getElementById('dashboardGreeting').textContent = `Welcome Back, ${user.name}!`;
+        
+        // Show verification alert if not verified
+        if (!isUserVerified()) {
+          document.getElementById('verificationAlert').style.display = 'block';
+        }
+      }
+    }
+  </script>
+</body>
+</html>

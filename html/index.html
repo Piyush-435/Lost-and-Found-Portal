@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost & Found Portal - Reuniting People with Their Belongings</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+  <div class="nav-container">
+
+    <div class="logo">
+      <span class="logo-icon">🔍</span>
+      <span class="logo-text">Lost & Found</span>
+    </div>
+
+    <div class="nav-links" id="navLinks">
+
+      <a href="index.html" class="nav-link active">Home</a>
+      <a href="browse.html" class="nav-link">Browse Items</a>
+
+      <!-- Theme Toggle -->
+      <button id="themeToggle" class="btn-outline">🌙</button>
+
+      <a href="login.html" class="btn-primary" id="loginBtn">Login</a>
+      <a href="register.html" class="btn-secondary" id="signupBtn">Sign Up</a>
+
+    </div>
+
+  </div>
+</nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1 class="hero-title">
+          Reuniting People with Their <span class="gradient-text">Belongings</span>
+        </h1>
+        <p class="hero-subtitle">
+          A secure, intelligent platform to report, match, and recover lost items. 
+          Join thousands of people who have found what they lost.
+        </p>
+        <div class="hero-buttons">
+          <a href="report-lost.html" class="btn-large btn-primary">
+            <span class="btn-icon">📱</span>
+            Report Lost Item
+          </a>
+          <a href="report-found.html" class="btn-large btn-secondary">
+            <span class="btn-icon">✨</span>
+            Report Found Item
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number">2,500+</div>
+            <div class="stat-label">Items Recovered</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">5,000+</div>
+            <div class="stat-label">Active Users</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">95%</div>
+            <div class="stat-label">Match Success</div>
+          </div>
+        </div>
+      </div>
+      <div class="hero-image">
+        <div class="floating-card card-1">
+          <div class="card-icon">📱</div>
+          <div class="card-text">iPhone 14 Pro</div>
+          <div class="card-badge found">Found</div>
+        </div>
+        <div class="floating-card card-2">
+          <div class="card-icon">💼</div>
+          <div class="card-text">Leather Wallet</div>
+          <div class="card-badge lost">Lost</div>
+        </div>
+        <div class="floating-card card-3">
+          <div class="card-icon">🔑</div>
+          <div class="card-text">Car Keys</div>
+          <div class="card-badge match">Matched</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Simple, secure, and smart - finding your lost items has never been easier</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">📝</div>
+          <h3 class="feature-title">Report Item</h3>
+          <p class="feature-description">Quickly report lost or found items with detailed descriptions, photos, and location information.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">Smart Matching</h3>
+          <p class="feature-description">Our AI-powered algorithm automatically matches lost items with found items based on multiple criteria.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">✅</div>
+          <h3 class="feature-title">Verify & Claim</h3>
+          <p class="feature-description">Secure verification process ensures items are returned to their rightful owners.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💬</div>
+          <h3 class="feature-title">Secure Chat</h3>
+          <p class="feature-description">Communicate safely with finders without revealing personal contact information.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔔</div>
+          <h3 class="feature-title">Instant Notifications</h3>
+          <p class="feature-description">Get notified immediately when a potential match is found for your item.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎁</div>
+          <h3 class="feature-title">Reward System</h3>
+          <p class="feature-description">Offer and manage rewards for finders to encourage item returns.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Items Section -->
+  <section class="recent-items">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Recently Reported Items</h2>
+        <p class="section-subtitle">Browse the latest lost and found items</p>
+      </div>
+      <div class="items-grid" id="recentItemsGrid">
+        <!-- Items will be populated by JavaScript -->
+      </div>
+      <div class="text-center">
+        <a href="browse.html" class="btn-primary">View All Items</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-content">
+        <h2 class="cta-title">Lost Something Valuable?</h2>
+        <p class="cta-subtitle">Don't wait! Report it now and let our smart matching system help you find it.</p>
+        <div class="cta-buttons">
+          <a href="register.html" class="btn-large btn-white">Get Started Free</a>
+          <a href="browse.html" class="btn-large btn-outline">Browse Items</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-logo">
+            <span class="logo-icon">🔍</span>
+            <span class="logo-text">Lost & Found</span>
+          </div>
+          <p class="footer-description">Helping reunite people with their belongings through smart technology and community support.</p>
+        </div>
+        <div class="footer-section">
+          <h4 class="footer-title">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="browse.html">Browse Items</a></li>
+            <li><a href="report-lost.html">Report Lost</a></li>
+            <li><a href="report-found.html">Report Found</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4 class="footer-title">Support</h4>
+          <ul class="footer-links">
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4 class="footer-title">Connect</h4>
+          <ul class="footer-links">
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Lost & Found Portal. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    // Update navbar based on authentication state
+    if (isLoggedIn()) {
+      const user = getCurrentUser();
+      const navLinks = document.getElementById('navLinks');
+      
+      // Remove login/signup buttons
+      document.getElementById('loginBtn')?.remove();
+      document.getElementById('signupBtn')?.remove();
+      
+      // Add profile dropdown button
+      const profileBtn = document.createElement('div');
+      profileBtn.style.cssText = 'position: relative; display: inline-block;';
+      profileBtn.innerHTML = `
+        <button class="btn-primary" style="display: flex; align-items: center; gap: 8px; border: none; cursor: pointer;">
+          <span style="font-size: 20px;">${user.avatar || '👤'}</span>
+          <span>${user.name}</span>
+        </button>
+        <div id="profileDropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 10px; background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); min-width: 200px; z-index: 1000;">
+          <a href="profile.html" style="display: block; padding: 12px 20px; color: var(--text-primary); transition: var(--transition); border-bottom: 1px solid var(--border-primary);">
+            <span style="margin-right: 8px;">👤</span> Profile
+          </a>
+          <a href="dashboard.html" style="display: block; padding: 12px 20px; color: var(--text-primary); transition: var(--transition); border-bottom: 1px solid var(--border-primary);">
+            <span style="margin-right: 8px;">📊</span> Dashboard
+          </a>
+          <a href="report-lost.html" style="display: block; padding: 12px 20px; color: var(--text-primary); transition: var(--transition); border-bottom: 1px solid var(--border-primary);">
+            <span style="margin-right: 8px;">➕</span> Report Lost
+          </a>
+          <a href="report-found.html" style="display: block; padding: 12px 20px; color: var(--text-primary); transition: var(--transition); border-bottom: 1px solid var(--border-primary);">
+            <span style="margin-right: 8px;">✅</span> Report Found
+          </a>
+          <button onclick="logoutUser()" style="display: block; width: 100%; padding: 12px 20px; color: var(--danger-color); background: none; border: none; text-align: left; cursor: pointer; transition: var(--transition);">
+            <span style="margin-right: 8px;">🚪</span> Logout
+          </button>
+        </div>
+      `;
+      
+      navLinks.appendChild(profileBtn);
+      
+      // Toggle dropdown
+      profileBtn.querySelector('button').addEventListener('click', function(e) {
+        e.stopPropagation();
+        const dropdown = document.getElementById('profileDropdown');
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+      });
+      
+      // Close dropdown when clicking outside
+      document.addEventListener('click', function() {
+        document.getElementById('profileDropdown').style.display = 'none';
+      });
+      
+      // Add hover effects to dropdown items
+      const dropdownLinks = profileBtn.querySelectorAll('a, button');
+      dropdownLinks.forEach(link => {
+        link.addEventListener('mouseenter', function() {
+          this.style.background = 'rgba(139, 92, 246, 0.1)';
+        });
+        link.addEventListener('mouseleave', function() {
+          this.style.background = 'transparent';
+        });
+      });
+    }
+  </script>
+  <script type="module" src="../js/main.js"></script>
+</body>
+</html>
