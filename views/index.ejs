@@ -1,0 +1,160 @@
+<%- include('partials/head') %>
+<body>
+<%- include('partials/navbar', { activePage: 'home' }) %>
+<%- include('partials/flash') %>
+
+<!-- Hero Section -->
+<section class="hero">
+  <div class="hero-container">
+    <div class="hero-content">
+      <h1 class="hero-title">
+         Reuniting People with Their<span class="gradient-text"> Belongings</span>
+      </h1>
+      <p class="hero-subtitle">
+        A secure, intelligent platform to report, match, and recover lost items.
+        Join thousands of people who have found what they lost.
+      </p>
+      <div class="hero-buttons">
+        <a href="/report-lost"  class="btn-large btn-primary"><span class="btn-icon">📱</span> Report Lost Item</a>
+        <a href="/report-found" class="btn-large btn-secondary"><span class="btn-icon">✨</span> Report Found Item</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <div class="stat-number">2,500+</div>
+          <div class="stat-label">Items Recovered</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">5,000+</div>
+          <div class="stat-label">Active Users</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">95%</div>
+          <div class="stat-label">Match Success</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-image">
+      <div class="floating-card card-1">
+        <div class="card-icon">📱</div>
+        <div class="card-text">iPhone 14 Pro</div>
+        <div class="card-badge found">Found</div>
+      </div>
+      <div class="floating-card card-2">
+        <div class="card-icon">💼</div>
+        <div class="card-text">Leather Wallet</div>
+        <div class="card-badge lost">Lost</div>
+      </div>
+      <div class="floating-card card-3">
+        <div class="card-icon">🔑</div>
+        <div class="card-text">Car Keys</div>
+        <div class="card-badge match">Matched</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-subtitle">Simple, secure, and smart - finding your lost items has never been easier</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📝</div>
+        <h3 class="feature-title">Report Item</h3>
+        <p class="feature-description">Quickly report lost or found items with detailed descriptions, photos, and location information.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎯</div>
+        <h3 class="feature-title">Smart Matching</h3>
+        <p class="feature-description">Our AI-powered algorithm automatically matches lost items with found items based on multiple criteria.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">✅</div>
+        <h3 class="feature-title">Verify & Claim</h3>
+        <p class="feature-description">Secure verification process ensures items are returned to their rightful owners.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💬</div>
+        <h3 class="feature-title">Secure Chat</h3>
+        <p class="feature-description">Communicate safely with finders without revealing personal contact information.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🔔</div>
+        <h3 class="feature-title">Instant Notifications</h3>
+        <p class="feature-description">Get notified immediately when a potential match is found for your item.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎁</div>
+        <h3 class="feature-title">Reward System</h3>
+        <p class="feature-description">Offer and manage rewards for finders to encourage item returns.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Recent Items Section -->
+<section class="recent-items">
+  <div class="container">
+    <div class="section-header">
+      <h2 class="section-title">Recently Reported Items</h2>
+      <p class="section-subtitle">Browse the latest lost and found items</p>
+    </div>
+    <div class="items-grid">
+      <% if (recentItems.length === 0) { %>
+        <div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
+          <div style="font-size:64px;margin-bottom:20px;">🔍</div>
+          <h3 style="margin-bottom:10px;">No items reported yet</h3>
+          <p style="color:var(--text-medium);">Be the first to report a lost or found item!</p>
+        </div>
+      <% } else { %>
+        <% recentItems.forEach(item => { %>
+          <div class="item-card" data-id="<%= item.id %>">
+            <div class="item-image"><%= item.icon %></div>
+            <div class="item-content">
+              <div class="item-header">
+                <div><h3 class="item-title"><%= item.name %></h3></div>
+                <span class="item-badge <%= item.type %>"><%= item.type === 'lost' ? 'Lost' : 'Found' %></span>
+              </div>
+              <div class="item-meta">
+                <div class="meta-item"><span class="meta-icon">📍</span><span><%= item.location %></span></div>
+                <div class="meta-item"><span class="meta-icon">📅</span><span><%= new Date(item.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) %></span></div>
+                <% if (item.reward) { %>
+                  <div class="meta-item"><span class="meta-icon">💰</span><span>Reward: $<%= item.reward %></span></div>
+                <% } %>
+              </div>
+              <p class="item-description"><%= item.description.length > 100 ? item.description.substring(0,100)+'...' : item.description %></p>
+              <div class="item-footer">
+                <a href="/items/<%= item.id %>" class="btn-primary">View Details</a>
+              </div>
+            </div>
+          </div>
+        <% }) %>
+      <% } %>
+    </div>
+    <div class="text-center" style="margin-top:40px;">
+      <a href="/browse" class="btn-primary">View All Items</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content">
+      <h2 class="cta-title">Lost Something Valuable?</h2>
+      <p class="cta-subtitle">Don't wait! Report it now and let our smart matching system help you find it.</p>
+      <div class="cta-buttons">
+        <a href="/auth/register" class="btn-large btn-white">Get Started Free</a>
+        <a href="/browse"        class="btn-large btn-outline">Browse Items</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<script src="/js/app.js"></script>
+</body>
+</html>

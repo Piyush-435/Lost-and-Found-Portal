@@ -1,0 +1,74 @@
+<%- include('../partials/head') %>
+<body>
+<%- include('../partials/navbar', { activePage: '' }) %>
+<%- include('../partials/flash') %>
+
+<!-- centered verification section -->
+<section style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px; background:var(--bg-gray);">
+  <div class="form-container" style="max-width:480px; width:100%;">
+
+    <div class="form-header" style="text-align:center;">
+      <!-- email icon -->
+      <div style="font-size:64px; margin-bottom:16px;">📧</div>
+      <h1 class="form-title">Verify Your Email</h1>
+      <!-- show user's email -->
+      <p class="form-subtitle">
+        We've sent a 6-digit code and a verification link to
+        <strong><%= currentUser.email %></strong>
+      </p>
+    </div>
+
+    <!-- OTP input form -->
+    <form action="/verify-email" method="POST">
+      <div class="form-group">
+        <label class="form-label" for="otp">Enter Verification Code</label>
+        <!-- large centered input for OTP -->
+        <input
+          type="text"
+          id="otp"
+          name="otp"
+          class="form-input"
+          placeholder="000000"
+          maxlength="6"
+          autocomplete="one-time-code"
+          style="text-align:center; font-size:24px; letter-spacing:8px;"
+          required
+        />
+      </div>
+
+      <!-- submit button -->
+      <button type="submit" class="form-button btn-primary">Verify Email</button>
+    </form>
+
+    <!-- divider -->
+    <div class="social-divider"><span>Or</span></div>
+
+    <!-- resend code -->
+    <div style="text-align:center; margin-bottom:20px;">
+      <p style="color:var(--text-medium); font-size:14px; margin-bottom:12px;">
+        Didn't receive the email? Check your spam folder or resend.
+      </p>
+      <form action="/resend-verification" method="POST">
+        <button type="submit" class="btn-secondary" style="width:100%;">
+          Resend Verification Email
+        </button>
+      </form>
+    </div>
+
+<div class="form-footer">
+  Wrong email?
+  <form action="/logout" method="POST" style="display:inline;">
+    <button type="submit" style="background:none; border:none; color:var(--primary-color); cursor:pointer; font-size:inherit; padding:0;">
+      Logout
+    </button>
+  </form>
+  and register again.
+</div>
+
+  </div>
+</section>
+
+<%- include('../partials/footer') %>
+<script src="/js/app.js"></script>
+</body>
+</html>

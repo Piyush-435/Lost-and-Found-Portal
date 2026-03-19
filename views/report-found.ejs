@@ -1,0 +1,155 @@
+<%- include('partials/head') %>
+<body>
+<%- include('partials/navbar', { activePage: '' }) %>
+<% editing = typeof editing !== 'undefined' ? editing : false; %>
+<% item    = typeof item    !== 'undefined' ? item    : {};    %>
+<%- include('partials/flash') %>
+
+<div class="form-container" style="max-width:700px;">
+  <div class="form-header">
+    <!-- change title based on editing or creating -->
+    <h1 class="form-title"><%= editing ? 'Edit Found Item' : 'Report Found Item' %></h1>
+    <p class="form-subtitle"><%= editing ? 'Update the details of the found item' : 'Help return a lost item to its owner' %></p>
+  </div>
+
+  <!-- change form action based on editing or creating -->
+  <form action="<%= editing ? '/items/' + item.id + '/edit' : '/report-found' %>" method="POST">
+
+    <div class="form-group">
+      <label class="form-label" for="itemName">Item Name *</label>
+      <input type="text" id="itemName" name="name" class="form-input"
+        placeholder="e.g., Blue iPhone, Brown Leather Wallet"
+        value="<%= editing ? item.name : '' %>"
+        required />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="category">Category *</label>
+      <select id="category" name="category" class="form-select" required>
+        <option value="">Select a category</option>
+        <% ['electronics','accessories','documents','bags','keys','clothing','jewelry','other'].forEach(cat => { %>
+          <!-- pre-select category when editing -->
+          <option value="<%= cat %>" <%= editing && item.category === cat ? 'selected' : '' %>>
+            <%= cat.charAt(0).toUpperCase() + cat.slice(1) %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="form-group">
+        <label class="form-label" for="foundDate">Date Found *</label>
+        <input type="date" id="foundDate" name="date" class="form-input" required
+          max="<%= new Date().toISOString().split('T')[0] %>"
+          
+          value="<%= editing ? new Date(item.date).toISOString().split('T')[0] : '' %>" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="foundTime">Time (Approx.)</label>
+        <input type="time" id="foundTime" name="time" class="form-input"
+          value="<%= editing ? (item.time || '') : '' %>" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="location">Location Found *</label>
+      <input type="text" id="location" name="location" class="form-input"
+        placeholder="e.g., Bus Stop on 5th Avenue, Library Reading Room"
+        value="<%= editing ? item.location : '' %>"
+        required />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="description">Detailed Description *</label>
+      <textarea id="description" name="description" class="form-textarea"
+        placeholder="Describe the found item (color, brand, condition, any visible details)."
+        required><%= editing ? item.description : '' %></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="currentLocation">Current Item Location *</label>
+      <select id="currentLocation" name="currentLocation" class="form-select" required>
+        <!-- pre-select current location when editing -->
+        <% ['with-me', 'police-station', 'lost-found-office', 'security-desk', 'other'].forEach(loc => { %>
+          <option value="<%= loc %>"
+            <%= editing && item.currentLocation === loc ? 'selected' : '' %>>
+            <% if (loc === 'with-me')           { %>I have it with me
+            <% } else if (loc === 'police-station')  { %>Turned in to Police Station
+            <% } else if (loc === 'lost-found-office') { %>Lost & Found Office
+            <% } else if (loc === 'security-desk')   { %>Security Desk
+            <% } else { %>Other (specify below)<% } %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+    <!-- other location input - shown if currentLocation is 'other' -->
+    <div class="form-group" id="otherLocationGroup"
+      style="display:<%= editing && item.currentLocation === 'other' ? 'block' : 'none' %>;">
+      <label class="form-label" for="otherLocation">Specify Location</label>
+      <input type="text" id="otherLocation" name="otherLocation" class="form-input"
+        placeholder="Where is the item currently?"
+        value="<%= editing && item.currentLocation === 'other' ? (item.otherLocation || '') : '' %>" />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="contactMethod">Preferred Contact Method *</label>
+      <select id="contactMethod" name="contactMethod" class="form-select" required>
+        <option value="">Select contact method</option>
+        <option value="email" <%= editing && item.contactMethod === 'email' ? 'selected' : '' %>>Email</option>
+      </select>
+    </div>
+
+    <!-- Additional Info checkboxes - pre-checked when editing -->
+    <div class="form-group">
+      <label class="form-label">Additional Information</label>
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" name="hasIdentification"
+            <%= editing && item.hasIdentification ? 'checked' : '' %> />
+          <span style="font-size:14px;color:var(--text-medium);">Item has identification (ID, name tag, etc.)</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" name="urgentReturn"
+            <%= editing && item.urgentReturn ? 'checked' : '' %> />
+          <span style="font-size:14px;color:var(--text-medium);">Item seems urgent (keys, wallet with cards, etc.)</span>
+        </label>
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" name="damagedItem"
+            <%= editing && item.damagedItem ? 'checked' : '' %> />
+          <span style="font-size:14px;color:var(--text-medium);">Item is damaged or broken</span>
+        </label>
+      </div>
+    </div>
+
+    <div style="background:var(--bg-light);padding:16px;border-radius:var(--radius-md);margin-bottom:24px;">
+      <p style="font-size:14px;color:var(--text-medium);margin-bottom:12px;">
+        <strong>✨ Thank you for being a Good Samaritan!</strong>
+      </p>
+      <p style="font-size:14px;color:var(--text-medium);">
+        Your effort to return this item means a lot. We'll match it with lost reports and connect you securely with the owner.
+      </p>
+    </div>
+
+    <!-- change button text based on editing or creating -->
+    <button type="submit" class="form-button btn-secondary">
+      <%= editing ? 'Update Found Item' : 'Submit Found Report' %>
+    </button>
+
+  </form>
+
+  <div class="form-footer">
+    Lost something instead? <a href="/report-lost">Report it here</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+<script src="/js/app.js"></script>
+<script>
+  // show/hide other location input
+  document.getElementById('currentLocation').addEventListener('change', function() {
+    document.getElementById('otherLocationGroup').style.display = this.value === 'other' ? 'block' : 'none';
+  });
+</script>
+</body>
+</html>

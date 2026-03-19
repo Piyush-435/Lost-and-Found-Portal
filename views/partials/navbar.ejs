@@ -1,0 +1,23 @@
+<nav class="navbar">
+  <div class="nav-container">
+    <div class="logo">
+      <span class="logo-icon">🔍</span>
+      <span class="logo-text"><a href="/">Lost & Found</a></span>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <a href="/" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'home' ? 'active' : '' %>">Home</a>
+      <a href="/browse" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'browse' ? 'active' : '' %>">Browse Items</a>
+
+<% if (isLoggedIn) { %>
+  <a href="/profile"   class="nav-link">👤 Profile</a>
+  <a href="/dashboard" class="nav-link">📊 Dashboard</a>
+  <form action="/logout" method="POST" style="margin:0;">
+    <button type="submit" class="nav-link" style="background:none;border:none;cursor:pointer;color:inherit;">🚪 Logout</button>
+  </form>
+<% } else { %>
+  <a href="/login"    class="btn-primary"   id="loginBtn">Login</a>
+  <a href="/register" class="btn-secondary" id="signupBtn">Sign Up</a>
+<% } %>
+    </div>
+  </div>
+</nav>
