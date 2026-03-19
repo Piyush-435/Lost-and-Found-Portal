@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Found Item - Lost & Found Portal</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">🔍</span>
+        <span class="logo-text">Lost & Found</span>
+      </div>
+      <div class="nav-links" id="navLinks">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="browse.html" class="nav-link">Browse Items</a>
+        <a href="login.html" class="btn-primary" id="loginBtn">Login</a>
+        <a href="register.html" class="btn-secondary" id="signupBtn">Sign Up</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Report Found Form -->
+  <div class="form-container" style="max-width: 700px;">
+    <div class="form-header">
+      <h1 class="form-title">Report Found Item</h1>
+      <p class="form-subtitle">Help return a lost item to its owner</p>
+    </div>
+    
+    <form id="foundForm">
+      <div class="form-group">
+        <label class="form-label" for="itemName">Item Name *</label>
+        <input 
+          type="text" 
+          id="itemName" 
+          class="form-input" 
+          placeholder="e.g., Blue iPhone, Brown Leather Wallet"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="category">Category *</label>
+        <select id="category" class="form-select" required>
+          <option value="">Select a category</option>
+          <option value="electronics">Electronics</option>
+          <option value="accessories">Accessories</option>
+          <option value="documents">Documents</option>
+          <option value="bags">Bags & Luggage</option>
+          <option value="keys">Keys</option>
+          <option value="clothing">Clothing</option>
+          <option value="jewelry">Jewelry</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+        <div class="form-group">
+          <label class="form-label" for="foundDate">Date Found *</label>
+          <input 
+            type="date" 
+            id="foundDate" 
+            class="form-input"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="foundTime">Time (Approx.)</label>
+          <input 
+            type="time" 
+            id="foundTime" 
+            class="form-input"
+          >
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="location">Location Found *</label>
+        <input 
+          type="text" 
+          id="location" 
+          class="form-input" 
+          placeholder="e.g., Bus Stop on 5th Avenue, Library Reading Room"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="description">Detailed Description *</label>
+        <textarea 
+          id="description" 
+          class="form-textarea" 
+          placeholder="Describe the found item (color, brand, condition, any visible details). Do NOT include sensitive information that could be used for verification."
+          required
+        ></textarea>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="currentLocation">Current Item Location *</label>
+        <select id="currentLocation" class="form-select" required>
+          <option value="">Where is the item now?</option>
+          <option value="with-me">I have it with me</option>
+          <option value="police-station">Turned in to Police Station</option>
+          <option value="lost-found-office">Lost & Found Office</option>
+          <option value="security-desk">Security Desk</option>
+          <option value="other">Other (specify below)</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="otherLocationGroup" style="display: none;">
+        <label class="form-label" for="otherLocation">Specify Location</label>
+        <input 
+          type="text" 
+          id="otherLocation" 
+          class="form-input" 
+          placeholder="Where is the item currently?"
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="contactMethod">Preferred Contact Method *</label>
+        <select id="contactMethod" class="form-select" required>
+          <option value="">Select contact method</option>
+          <option value="email">Email</option>
+          <option value="phone">Phone</option>
+          <option value="both">Both Email and Phone</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Additional Information</label>
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="hasIdentification">
+            <span style="font-size: 14px; color: var(--text-medium);">Item has identification (ID, name tag, etc.)</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="urgentReturn">
+            <span style="font-size: 14px; color: var(--text-medium);">Item seems urgent (keys, wallet with cards, etc.)</span>
+          </label>
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="damagedItem">
+            <span style="font-size: 14px; color: var(--text-medium);">Item is damaged or broken</span>
+          </label>
+        </div>
+      </div>
+
+      <div style="background: var(--bg-light); padding: 16px; border-radius: var(--radius-md); margin-bottom: 24px;">
+        <p style="font-size: 14px; color: var(--text-medium); margin-bottom: 12px;">
+          <strong>✨ Thank you for being a Good Samaritan!</strong>
+        </p>
+        <p style="font-size: 14px; color: var(--text-medium);">
+          Your effort to return this item means a lot. We'll match it with lost reports and connect you securely with the owner. Your contact details remain private until both parties verify the match.
+        </p>
+      </div>
+
+      <button type="submit" class="form-button btn-secondary">
+        Submit Found Report
+      </button>
+    </form>
+
+    <div class="form-footer">
+      Lost something instead? <a href="report-lost.html">Report it here</a>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Show/hide other location input
+    document.getElementById('currentLocation').addEventListener('change', function() {
+      const otherGroup = document.getElementById('otherLocationGroup');
+      otherGroup.style.display = this.value === 'other' ? 'block' : 'none';
+    });
+
+    // Update navbar based on authentication state
+    if (isLoggedIn()) {
+      const user = getCurrentUser();
+      const navLinks = document.getElementById('navLinks');
+      
+      document.getElementById('loginBtn')?.remove();
+      document.getElementById('signupBtn')?.remove();
+      
+      const profileBtn = document.createElement('div');
+      profileBtn.style.cssText = 'position: relative; display: inline-block;';
+      profileBtn.innerHTML = `
+        <button class="btn-primary" style="display: flex; align-items: center; gap: 8px; border: none; cursor: pointer;">
+          <span style="font-size: 20px;">${user.avatar || '👤'}</span>
+          <span>${user.name}</span>
+        </button>
+        <div id="profileDropdown" style="display: none; position: absolute; right: 0; top: 100%; margin-top: 10px; background: var(--bg-card); backdrop-filter: blur(20px); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); box-shadow: var(--shadow-xl); min-width: 200px; z-index: 1000;">
+          <a href="profile.html" style="display: block; padding: 12px 20px; color: var(--text-primary); transition: var(--transition); border-bottom: 1px solid var(--border-primary);">
+            <span style="margin-right: 8px;">👤</span> Profile
+          </a>
+          <a href="dashboard.html" style="display: block; padding: 12px 20px; color: var(--text-primary); transition: var(--transition); border-bottom: 1px solid var(--border-primary);">
+            <span style="margin-right: 8px;">📊</span> Dashboard
+          </a>
+          <a href="report-lost.html" style="display: block; padding: 12px 20px; color: var(--text-primary); transition: var(--transition); border-bottom: 1px solid var(--border-primary);">
+            <span style="margin-right: 8px;">➕</span> Report Lost
+          </a>
+          <a href="report-found.html" style="display: block; padding: 12px 20px; color: var(--text-primary); transition: var(--transition); border-bottom: 1px solid var(--border-primary);">
+            <span style="margin-right: 8px;">✅</span> Report Found
+          </a>
+          <button onclick="logoutUser()" style="display: block; width: 100%; padding: 12px 20px; color: var(--danger-color); background: none; border: none; text-align: left; cursor: pointer; transition: var(--transition);">
+            <span style="margin-right: 8px;">🚪</span> Logout
+          </button>
+        </div>
+      `;
+      
+      navLinks.appendChild(profileBtn);
+      
+      profileBtn.querySelector('button').addEventListener('click', function(e) {
+        e.stopPropagation();
+        const dropdown = document.getElementById('profileDropdown');
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+      });
+      
+      document.addEventListener('click', function() {
+        document.getElementById('profileDropdown').style.display = 'none';
+      });
+      
+      const dropdownLinks = profileBtn.querySelectorAll('a, button');
+      dropdownLinks.forEach(link => {
+        link.addEventListener('mouseenter', function() {
+          this.style.background = 'rgba(139, 92, 246, 0.1)';
+        });
+        link.addEventListener('mouseleave', function() {
+          this.style.background = 'transparent';
+        });
+      });
+    }
+  </script>
+</body>
+</html>

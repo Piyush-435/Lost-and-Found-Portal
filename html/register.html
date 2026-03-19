@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Lost & Found Portal</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">🔍</span>
+        <span class="logo-text">Lost & Found</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="browse.html" class="nav-link">Browse Items</a>
+        <a href="login.html" class="btn-primary">Login</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Register Form -->
+  <div class="form-container">
+    <div class="form-header">
+      <h1 class="form-title">Create Account</h1>
+      <p class="form-subtitle">Join our community and start finding lost items</p>
+    </div>
+    
+    <form id="registerForm">
+      <div class="form-group">
+        <label class="form-label" for="fullName">Full Name</label>
+        <input 
+          type="text" 
+          id="fullName" 
+          class="form-input" 
+          placeholder="Enter your full name"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <input 
+          type="email" 
+          id="email" 
+          class="form-input" 
+          placeholder="Enter your email"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="phone">Phone Number</label>
+        <input 
+          type="tel" 
+          id="phone" 
+          class="form-input" 
+          placeholder="Enter your phone number"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Password</label>
+        <input 
+          type="password" 
+          id="password" 
+          class="form-input" 
+          placeholder="Create a password"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="confirmPassword">Confirm Password</label>
+        <input 
+          type="password" 
+          id="confirmPassword" 
+          class="form-input" 
+          placeholder="Confirm your password"
+          required
+        >
+      </div>
+
+      <div class="form-group">
+        <label class="form-checkbox-label" style="align-items: flex-start;">
+          <input type="checkbox" id="terms" required style="margin-top: 3px;">
+          <span>I agree to the <a href="#" class="form-link">Terms of Service</a> and <a href="#" class="form-link">Privacy Policy</a></span>
+        </label>
+      </div>
+
+      <button type="submit" class="form-button btn-primary">
+        Create Account
+      </button>
+    </form>
+
+    <div class="form-footer">
+      Already have an account? <a href="login.html">Login here</a>
+    </div>
+
+    <div class="social-divider">
+      <span>Or sign up with</span>
+    </div>
+
+    <div class="social-buttons">
+      <button class="btn-social">
+        <span>🔍</span> Google
+      </button>
+      <button class="btn-social">
+        <span>📘</span> Facebook
+      </button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

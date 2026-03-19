@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - Lost & Found Portal</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">🔍</span>
+        <span class="logo-text">Lost & Found</span>
+      </div>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="browse.html" class="nav-link">Browse</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <button onclick="logoutUser()" class="btn-secondary">Logout</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Dashboard -->
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <ul class="sidebar-menu">
+        <li class="sidebar-item">
+          <a href="dashboard.html" class="sidebar-link">
+            <span class="sidebar-icon">📊</span>
+            Dashboard
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="my-lost-items.html" class="sidebar-link">
+            <span class="sidebar-icon">📱</span>
+            My Lost Items
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="my-found-items.html" class="sidebar-link">
+            <span class="sidebar-icon">✨</span>
+            My Found Items
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="matches.html" class="sidebar-link">
+            <span class="sidebar-icon">🎯</span>
+            Matches
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="messages.html" class="sidebar-link">
+            <span class="sidebar-icon">💬</span>
+            Messages
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="notifications.html" class="sidebar-link">
+            <span class="sidebar-icon">🔔</span>
+            Notifications
+          </a>
+        </li>
+        <li class="sidebar-item" style="margin-top: 30px;">
+          <a href="report-lost.html" class="sidebar-link">
+            <span class="sidebar-icon">➕</span>
+            Report Lost
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="report-found.html" class="sidebar-link">
+            <span class="sidebar-icon">✅</span>
+            Report Found
+          </a>
+        </li>
+        <li class="sidebar-item" style="margin-top: 30px;">
+          <a href="profile.html" class="sidebar-link active">
+            <span class="sidebar-icon">👤</span>
+            Profile
+          </a>
+        </li>
+        <li class="sidebar-item">
+          <a href="#" class="sidebar-link">
+            <span class="sidebar-icon">⚙️</span>
+            Settings
+          </a>
+        </li>
+      </ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="dashboard-content">
+      <div class="dashboard-header">
+        <div>
+          <h1 class="dashboard-title">Profile & Verification</h1>
+          <p style="color: var(--text-secondary);">Manage your account and verify your identity</p>
+        </div>
+      </div>
+
+      <!-- Verification Alert -->
+      <div id="verificationAlert" class="verification-alert" style="margin-bottom: 30px;">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <span style="font-size: 32px;">⚠️</span>
+          <div style="flex: 1;">
+            <h3 style="font-size: 18px; margin-bottom: 6px; color: var(--text-primary);">Verification Required</h3>
+            <p style="color: var(--text-secondary); font-size: 14px;">
+              Please verify your email or phone number to start reporting lost and found items.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Card -->
+      <div style="background: var(--bg-card); backdrop-filter: blur(20px); padding: 40px; border-radius: var(--radius-xl); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); border: 1px solid var(--border-primary); margin-bottom: 30px;">
+        <h2 style="font-size: 24px; font-weight: 700; margin-bottom: 30px; color: var(--text-primary);">Personal Information</h2>
+        
+        <div style="display: flex; align-items: center; gap: 30px; margin-bottom: 40px;">
+          <div style="width: 100px; height: 100px; border-radius: var(--radius-full); background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); display: flex; align-items: center; justify-content: center; font-size: 48px; box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);" id="userAvatar">
+            👤
+          </div>
+          <div style="flex: 1;">
+            <h2 style="font-size: 28px; font-weight: 900; margin-bottom: 8px; color: var(--text-primary);" id="userName">John Doe</h2>
+            <p style="color: var(--text-tertiary); margin-bottom: 4px;">Member since: <span id="memberSince">Jan 15, 2025</span></p>
+            <div style="display: flex; gap: 10px; margin-top: 12px;">
+              <span class="verification-badge" id="emailBadge">
+                <span>📧</span> Email: Not Verified
+              </span>
+              <span class="verification-badge" id="phoneBadge">
+                <span>📱</span> Phone: Not Verified
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+          <div class="profile-field">
+            <label>Email Address</label>
+            <input type="email" id="profileEmail" class="form-input" readonly>
+          </div>
+          <div class="profile-field">
+            <label>Phone Number</label>
+            <input type="tel" id="profilePhone" class="form-input" readonly>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verification Section -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 30px;">
+        <!-- Email Verification -->
+        <div class="verification-card" id="emailVerificationCard">
+          <div class="verification-icon">📧</div>
+          <h3>Email Verification</h3>
+          <p>Verify your email address to report items and receive notifications</p>
+          <div id="emailVerifySection">
+            <button class="btn-primary" onclick="sendEmailVerification()">Send Verification Code</button>
+          </div>
+          <div id="emailCodeSection" style="display: none;">
+            <input type="text" class="form-input" id="emailCode" placeholder="Enter 6-digit code" maxlength="6" style="margin-bottom: 12px;">
+            <button class="btn-primary" onclick="verifyEmail()">Verify Email</button>
+          </div>
+          <div id="emailVerifiedSection" style="display: none;">
+            <div style="text-align: center; padding: 20px;">
+              <span style="font-size: 48px;">✅</span>
+              <p style="color: var(--success-color); font-weight: 600; margin-top: 12px;">Email Verified!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Phone Verification -->
+        <div class="verification-card" id="phoneVerificationCard">
+          <div class="verification-icon">📱</div>
+          <h3>Phone Verification</h3>
+          <p>Verify your phone number for faster communication with finders</p>
+          <div id="phoneVerifySection">
+            <button class="btn-secondary" onclick="sendPhoneVerification()">Send SMS Code</button>
+          </div>
+          <div id="phoneCodeSection" style="display: none;">
+            <input type="text" class="form-input" id="phoneCode" placeholder="Enter 6-digit code" maxlength="6" style="margin-bottom: 12px;">
+            <button class="btn-secondary" onclick="verifyPhone()">Verify Phone</button>
+          </div>
+          <div id="phoneVerifiedSection" style="display: none;">
+            <div style="text-align: center; padding: 20px;">
+              <span style="font-size: 48px;">✅</span>
+              <p style="color: var(--success-color); font-weight: 600; margin-top: 12px;">Phone Verified!</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Check authentication
+    if (!requireAuth()) {
+      // Will redirect to login
+    } else {
+      // Load user data
+      const user = getCurrentUser();
+      if (user) {
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('memberSince').textContent = new Date(user.memberSince).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        document.getElementById('profileEmail').value = user.email;
+        document.getElementById('profilePhone').value = user.phone || 'Not provided';
+        document.getElementById('userAvatar').textContent = user.avatar || user.name.charAt(0).toUpperCase();
+
+        // Update verification status
+        if (user.emailVerified) {
+          document.getElementById('emailVerifySection').style.display = 'none';
+          document.getElementById('emailVerifiedSection').style.display = 'block';
+          document.getElementById('emailBadge').innerHTML = '<span>✅</span> Email: Verified';
+          document.getElementById('emailBadge').style.background = 'rgba(16, 185, 129, 0.2)';
+          document.getElementById('emailBadge').style.color = 'var(--success-color)';
+        }
+
+        if (user.phoneVerified) {
+          document.getElementById('phoneVerifySection').style.display = 'none';
+          document.getElementById('phoneVerifiedSection').style.display = 'block';
+          document.getElementById('phoneBadge').innerHTML = '<span>✅</span> Phone: Verified';
+          document.getElementById('phoneBadge').style.background = 'rgba(16, 185, 129, 0.2)';
+          document.getElementById('phoneBadge').style.color = 'var(--success-color)';
+        }
+
+        // Hide alert if verified
+        if (user.emailVerified || user.phoneVerified) {
+          document.getElementById('verificationAlert').style.display = 'none';
+        }
+      }
+    }
+
+    // Send email verification
+    function sendEmailVerification() {
+      showNotification('Code Sent!', 'Verification code sent to your email. (Demo: Use code 123456)', 'success');
+      document.getElementById('emailVerifySection').style.display = 'none';
+      document.getElementById('emailCodeSection').style.display = 'block';
+    }
+
+    // Verify email
+    function verifyEmail() {
+      const code = document.getElementById('emailCode').value;
+      if (code === '123456' || code.length === 6) {
+        const user = getCurrentUser();
+        user.emailVerified = true;
+        setCurrentUser(user);
+        
+        document.getElementById('emailCodeSection').style.display = 'none';
+        document.getElementById('emailVerifiedSection').style.display = 'block';
+        document.getElementById('emailBadge').innerHTML = '<span>✅</span> Email: Verified';
+        document.getElementById('emailBadge').style.background = 'rgba(16, 185, 129, 0.2)';
+        document.getElementById('emailBadge').style.color = 'var(--success-color)';
+        document.getElementById('verificationAlert').style.display = 'none';
+        
+        showNotification('Success!', 'Email verified successfully!', 'success');
+      } else {
+        showNotification('Error', 'Invalid verification code', 'warning');
+      }
+    }
+
+    // Send phone verification
+    function sendPhoneVerification() {
+      showNotification('Code Sent!', 'Verification code sent via SMS. (Demo: Use code 123456)', 'success');
+      document.getElementById('phoneVerifySection').style.display = 'none';
+      document.getElementById('phoneCodeSection').style.display = 'block';
+    }
+
+    // Verify phone
+    function verifyPhone() {
+      const code = document.getElementById('phoneCode').value;
+      if (code === '123456' || code.length === 6) {
+        const user = getCurrentUser();
+        user.phoneVerified = true;
+        setCurrentUser(user);
+        
+        document.getElementById('phoneCodeSection').style.display = 'none';
+        document.getElementById('phoneVerifiedSection').style.display = 'block';
+        document.getElementById('phoneBadge').innerHTML = '<span>✅</span> Phone: Verified';
+        document.getElementById('phoneBadge').style.background = 'rgba(16, 185, 129, 0.2)';
+        document.getElementById('phoneBadge').style.color = 'var(--success-color)';
+        document.getElementById('verificationAlert').style.display = 'none';
+        
+        showNotification('Success!', 'Phone verified successfully!', 'success');
+      } else {
+        showNotification('Error', 'Invalid verification code', 'warning');
+      }
+    }
+  </script>
+</body>
+</html>
