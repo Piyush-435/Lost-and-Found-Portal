@@ -1,0 +1,136 @@
+<%- include('partials/head') %>
+<body>
+<%- include('partials/navbar', { activePage: '' }) %>
+<% editing = typeof editing !== 'undefined' ? editing : false; %>
+<% item    = typeof item    !== 'undefined' ? item    : {};    %>
+<%- include('partials/flash') %>
+
+<div class="form-container" style="max-width:700px;">
+  <div class="form-header">
+    <!-- change title based on editing or creating -->
+    <h1 class="form-title"><%= editing ? 'Edit Lost Item' : 'Report Lost Item' %></h1>
+    <p class="form-subtitle"><%= editing ? 'Update the details of your lost item' : 'Provide details about your lost item to help us find it' %></p>
+  </div>
+
+  <!-- change form action based on editing or creating -->
+  <form action="<%= editing ? '/items/' + item.id + '/edit' : '/report-lost' %>" method="POST">
+
+    <div class="form-group">
+      <label class="form-label" for="itemName">Item Name *</label>
+      <input type="text" id="itemName" name="name" class="form-input"
+        placeholder="e.g., iPhone 14 Pro, Black Leather Wallet"
+        value="<%= editing ? item.name : '' %>"
+        required />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="category">Category *</label>
+      <select id="category" name="category" class="form-select" required>
+        <option value="">Select a category</option>
+        <% ['electronics','accessories','documents','bags','keys','clothing','jewelry','other'].forEach(cat => { %>
+          <option value="<%= cat %>" <%= editing && item.category === cat ? 'selected' : '' %>>
+            <%= cat.charAt(0).toUpperCase() + cat.slice(1) %>
+          </option>
+        <% }) %>
+      </select>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div class="form-group">
+        <label class="form-label" for="lostDate">Date Lost *</label>
+        <input type="date" id="lostDate" name="date" class="form-input" required
+          max="<%= new Date().toISOString().split('T')[0] %>"
+          value="<%= editing ? new Date(item.date).toISOString().split('T')[0] : '' %>" />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="lostTime">Time (Approx.)</label>
+        <input type="time" id="lostTime" name="time" class="form-input"
+          value="<%= editing ? (item.time || '') : '' %>" />
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="location">Location Lost *</label>
+      <input type="text" id="location" name="location" class="form-input"
+        placeholder="e.g., Central Park, Coffee Shop on Main St"
+        value="<%= editing ? item.location : '' %>"
+        required />
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="description">Detailed Description *</label>
+      <textarea id="description" name="description" class="form-textarea"
+        placeholder="Describe your item in detail (color, brand, unique features, distinguishing marks, etc.)"
+        required><%= editing ? item.description : '' %></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="contactMethod">Preferred Contact Method *</label>
+      <select id="contactMethod" name="contactMethod" class="form-select" required>
+        <option value="">Select contact method</option>
+        <option value="email" <%= editing && item.contactMethod === 'email' ? 'selected' : '' %>>Email</option>
+      </select>
+    </div>
+
+    <!-- Reward Section -->
+    <div class="form-group">
+      <label class="form-label">Reward Offered (Optional)</label>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <!-- check the checkbox if reward exists when editing -->
+          <input type="checkbox" id="offerReward" name="offerReward"
+            <%= editing && item.reward && parseFloat(item.reward) > 0 ? 'checked' : '' %> />
+          <span style="font-size:14px;color:var(--text-medium);">I want to offer a reward</span>
+        </label>
+        <input type="number" id="rewardAmount" name="reward" class="form-input"
+          placeholder="Amount ($)" min="0"
+          value="<%= editing && item.reward ? parseFloat(item.reward) : '' %>"
+          <%= editing && item.reward && parseFloat(item.reward) > 0 ? '' : 'disabled' %> />
+      </div>
+    </div>
+
+    <!-- Verification Questions -->
+    <div class="form-group">
+      <label class="form-label">Verification Questions <strong>(max two questions)</strong> <span style="font-size:12px;color:var(--text-medium);">(Hidden from public)</span></label>
+      <p style="font-size:14px;color:var(--text-medium);margin-bottom:12px;">
+        Add security questions to verify the rightful owner. These won't be visible to others.
+      </p>
+      <input type="text" name="question1" class="form-input" placeholder="Question 1: e.g., What's inside the wallet?" style="margin-bottom:12px;" />
+      <input type="text" name="answer1"   class="form-input" placeholder="Answer 1" style="margin-bottom:12px;" />
+      <input type="text" name="question2" class="form-input" placeholder="Question 2: e.g., What's the phone's lock screen wallpaper?" style="margin-bottom:12px;" />
+      <input type="text" name="answer2"   class="form-input" placeholder="Answer 2" />
+    </div>
+
+    <div style="background:var(--bg-light);padding:16px;border-radius:var(--radius-md);margin-bottom:24px;">
+      <p style="font-size:14px;color:var(--text-medium);">
+        <strong>📌 Note:</strong> Your personal contact information will remain private.
+        If a match is found, you'll be notified.
+      </p>
+    </div>
+
+    <!-- change button text based on editing or creating -->
+    <button type="submit" class="form-button btn-primary">
+      <%= editing ? 'Update Lost Item' : 'Submit Lost Report' %>
+    </button>
+
+  </form>
+
+  <div class="form-footer">
+    Need to report a found item instead? <a href="/report-found">Click here</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+<script src="/js/app.js"></script>
+<script>
+  // enable/disable reward amount when checkbox toggled
+  const offerReward  = document.getElementById('offerReward');
+  const rewardAmount = document.getElementById('rewardAmount');
+
+  offerReward.addEventListener('change', function() {
+    rewardAmount.disabled = !this.checked;
+    if (!this.checked) rewardAmount.value = '';
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!-- loads the head section (meta tags, CSS links, title) -->
+<%- include('partials/head') %>
+
+<body>
+
+<!-- loads the navigation bar -->
+<%- include('partials/navbar', { activePage: 'browse' }) %>
+
+<!-- loads flash messages (success/error) -->
+<%- include('partials/flash') %>
+
+<!-- main browse section -->
+<section style="padding:120px 20px 80px;background:var(--bg-gray);">
+  <div class="container">
+
+    <!-- page title and item count -->
+    <div style="text-align:center;margin-bottom:40px;">
+      <h1 style="font-size:42px;font-weight:700;margin-bottom:16px;">
+        Browse Lost & Found Items
+      </h1>
+      <p style="font-size:18px;color:var(--text-medium);">
+        Search through reported items to find what you're looking for
+        <!-- show total item count if available -->
+        <% if (typeof totalItems !== 'undefined') { %>
+          &nbsp;·&nbsp;<strong><%= totalItems %></strong>
+          <!-- show "item" or "items" depending on count -->
+          item<%= totalItems !== 1 ? 's' : '' %> listed
+        <% } %>
+      </p>
+    </div>
+
+    <!-- search and filter form -->
+    <!-- method="GET" means filters appear in the URL so user can share/bookmark -->
+    <form method="GET" action="/browse" class="search-filter-bar">
+
+      <!-- text search input - keeps previous value after form submit -->
+      <input type="text" name="search" class="search-input" placeholder="Search by item name, description, location..." value="<%= typeof filters !== 'undefined' ? (filters.search || '') : '' %>">
+
+      <!-- category filter dropdown -->
+      <select name="category" class="filter-select">
+        <option value="">All Categories</option>
+        <!-- loop through all categories and render as options -->
+        <% ['electronics','accessories','documents','bags','keys','clothing','jewelry','other'].forEach(cat => { %>
+          <!-- keep previously selected category selected after reload -->
+          <option value="<%= cat %>" <%= typeof filters !== 'undefined' && filters.category === cat ? 'selected' : '' %>>
+            <!-- capitalize first letter of category name -->
+            <%= cat.charAt(0).toUpperCase() + cat.slice(1) %>
+          </option>
+        <% }) %>
+      </select>
+
+      <!-- lost/found type filter -->
+      <select name="type" class="filter-select">
+        <option value="">All Types</option>
+        <!-- keep previously selected type selected after reload -->
+        <option value="lost"  <%= typeof filters !== 'undefined' && filters.type === 'lost'  ? 'selected' : '' %>>Lost</option>
+        <option value="found" <%= typeof filters !== 'undefined' && filters.type === 'found' ? 'selected' : '' %>>Found</option>
+      </select>
+
+      <!-- sorting dropdown -->
+      <select name="sort" class="filter-select">
+        <!-- keep previously selected sort option selected after reload -->
+        <option value="recent"   <%= typeof filters !== 'undefined' && filters.sort === 'recent'   ? 'selected' : '' %>>Most Recent</option>
+        <option value="oldest"   <%= typeof filters !== 'undefined' && filters.sort === 'oldest'   ? 'selected' : '' %>>Oldest First</option>
+        <option value="location" <%= typeof filters !== 'undefined' && filters.sort === 'location' ? 'selected' : '' %>>By Location</option>
+      </select>
+
+      <!-- apply filters button -->
+      <button type="submit" class="btn-primary">Search</button>
+      <!-- clear all filters button - reloads page without any query params -->
+      <a href="/browse" class="btn-secondary">Clear</a>
+
+    </form>
+
+    <!-- grid container for item cards -->
+    <div class="items-grid" id="itemsGrid">
+
+      <!-- show empty state if no items match the filters -->
+      <% if (items.length === 0) { %>
+        <div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
+          <div style="font-size:64px;margin-bottom:20px;">🔍</div>
+          <h3 style="font-size:24px;margin-bottom:10px;">No items found</h3>
+          <p style="color:var(--text-medium);">Try adjusting your filters or search terms</p>
+        </div>
+
+      <% } else { %>
+
+        <!-- loop through all items returned from the database -->
+        <% items.forEach(item => { %>
+
+          <!-- item card - data-id stores MySQL integer id -->
+          <div class="item-card" data-id="<%= item.id %>">
+
+            <!-- category icon (emoji assigned in controller based on category) -->
+            <div class="item-image"><%= item.icon %></div>
+
+            <div class="item-content">
+
+              <!-- item name and lost/found badge -->
+              <div class="item-header">
+                <div>
+                  <h3 class="item-title"><%= item.name %></h3>
+                </div>
+                <!-- badge color changes based on type (lost = red, found = green) -->
+                <span class="item-badge <%= item.type %>">
+                  <%= item.type === 'lost' ? 'Lost' : 'Found' %>
+                </span>
+              </div>
+
+              <!-- item metadata (location, date, reward) -->
+              <div class="item-meta">
+
+                <!-- location where item was lost/found -->
+                <div class="meta-item">
+                  <span class="meta-icon">📍</span>
+                  <span><%= item.location %></span>
+                </div>
+
+                <!-- date the report was created -->
+                <div class="meta-item">
+                  <span class="meta-icon">📅</span>
+                  <span><%= new Date(item.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) %></span>
+                </div>
+
+                <!-- only show reward if it exists and is greater than 0 -->
+                <% if (item.reward && parseFloat(item.reward) > 0) { %>
+                  <div class="meta-item">
+                    <span class="meta-icon">💰</span>
+                    <span>Reward: $<%= parseFloat(item.reward).toFixed(2) %></span>
+                  </div>
+                <% } %>
+
+              </div>
+
+              <!-- truncate description to 100 characters to keep cards uniform -->
+              <p class="item-description">
+                <%= item.description.length > 100 ? item.description.substring(0,100) + '...' : item.description %>
+              </p>
+
+              <!-- action buttons -->
+              <div class="item-footer">
+
+                <!-- view full item detail page -->
+                <a href="/items/<%= item.id %>" class="btn-primary">View Details</a>
+
+                <!-- show different button depending on item type -->
+                <% if (item.type === 'lost') { %>
+                  <!-- user can claim they found this lost item -->
+                  <a href="/items/<%= item.id %>" class="btn-secondary">I Found This</a>
+                <% } else { %>
+                  <!-- user can contact the person who found this item -->
+                  <a href="/items/<%= item.id %>" class="btn-secondary">Contact Finder</a>
+                <% } %>
+
+              </div>
+
+            </div>
+          </div>
+
+        <% }) %>
+
+      <% } %>
+
+    </div>
+
+    <!-- pagination - only show if more than 1 page -->
+    <% if (typeof totalPages !== 'undefined' && totalPages > 1) { %>
+      <div class="text-center" style="margin-top:40px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;">
+
+        <!-- generate a button for each page number -->
+        <% for (let p = 1; p <= totalPages; p++) { %>
+          <!-- keep current filters in URL when changing pages -->
+          <!-- highlight current page with btn-primary, others with btn-secondary -->
+          <a href="/browse?search=<%= encodeURIComponent(filters.search||'') %>&category=<%= filters.category||'' %>&type=<%= filters.type||'' %>&sort=<%= filters.sort||'recent' %>&page=<%= p %>" class="<%= p === currentPage ? 'btn-primary' : 'btn-secondary' %>" style="min-width:42px;text-align:center;">
+            <%= p %>
+          </a>
+        <% } %>
+
+      </div>
+
+    <% } else { %>
+
+      <!-- if only one page, show total count message -->
+      <div class="text-center" style="margin-top:40px;">
+        <% if (items.length > 0) { %>
+          <p style="color:var(--text-medium);font-size:14px;">Showing all <%= items.length %> items</p>
+        <% } %>
+      </div>
+
+    <% } %>
+
+  </div>
+</section>
+
+<!-- loads the footer -->
+<%- include('partials/footer') %>
+
+<!-- main client-side JavaScript -->
+<script src="/js/app.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,159 @@
+<%- include('partials/head') %>
+<body>
+<%- include('partials/navbar', { activePage: '' }) %>
+<%- include('partials/flash') %>
+
+<div class="dashboard-container">
+  <%- include('partials/sidebar', { activeSidebar: 'profile' }) %>
+
+  <main class="dashboard-content">
+    <div class="dashboard-header">
+      <div>
+        <h1 class="dashboard-title">Profile & Verification</h1>
+        <p class="dashboard-subtitle">Manage your account and verify your identity</p>
+      </div>
+    </div>
+
+    <!-- Verification Alert - only show if email not verified -->
+    <% if (!currentUser.emailVerified) { %>
+      <div class="verification-alert">
+        <div class="verification-alert-inner">
+          <span class="verification-alert-icon">⚠️</span>
+          <div class="verification-alert-text">
+            <h3 class="verification-alert-title">Verification Required</h3>
+            <p class="verification-alert-desc">
+              Please verify your email address to start reporting lost and found items.
+            </p>
+          </div>
+        </div>
+      </div>
+    <% } %>
+
+    <!-- Profile Card -->
+    <div class="profile-card">
+      <h2 class="profile-card-title">Personal Information</h2>
+
+      <div class="profile-avatar-section">
+        <div class="profile-avatar">
+          <%= currentUser.avatar || '👤' %>
+        </div>
+        <div class="profile-info">
+          <h2 class="profile-name"><%= currentUser.name %></h2>
+          <p class="profile-member-since">
+            Member since: <%= new Date(currentUser.memberSince || currentUser.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) %>
+          </p>
+          <!-- email verification badge -->
+          <div class="profile-badges">
+            <% if (currentUser.emailVerified) { %>
+              <span class="verification-badge verified"><span>✅</span> Email: Verified</span>
+            <% } else { %>
+              <span class="verification-badge"><span>📧</span> Email: Not Verified</span>
+            <% } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="profile-fields">
+        <div class="profile-field">
+          <label>Email Address</label>
+          <input type="email" class="form-input" value="<%= currentUser.email %>" readonly />
+        </div>
+        <div class="profile-field">
+          <label>Phone Number</label>
+          <input type="tel" class="form-input" value="<%= currentUser.phone || 'Not provided' %>" readonly />
+        </div>
+      </div>
+    </div>
+
+    <!-- Email Verification Card -->
+    <div style="width:100%; margin-bottom:30px;">
+  <div class="verification-card" id="emailVerificationCard">
+        <div class="verification-icon">📧</div>
+        <h3>Email Verification</h3>
+        <p>Verify your email address to report items and receive notifications</p>
+        <% if (currentUser.emailVerified) { %>
+          <div class="verification-card-verified">
+            <span class="verification-card-verified-icon">✅</span>
+            <p class="verification-card-verified-text">Email Verified!</p>
+          </div>
+        <% } else { %>
+          <div id="emailVerifySection">
+            <button class="btn-primary" onclick="sendVerification('email')">Send Verification Code</button>
+          </div>
+          <div id="emailCodeSection" style="display:none;">
+            <input type="text" class="form-input" id="emailCode" placeholder="Enter 6-digit code" maxlength="6" style="margin-bottom:12px;" />
+            <button class="btn-primary" onclick="submitVerification('email')">Verify Email</button>
+          </div>
+        <% } %>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<%- include('partials/footer') %>
+<script src="/js/app.js"></script>
+<script>
+
+  const sendVerification = async (type) => {
+    try {
+      const res  = await fetch('/resend-verification', { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById(type + 'VerifySection').style.display = 'none';
+        document.getElementById(type + 'CodeSection').style.display   = 'block';
+        showFlash('Verification code sent! Please check your inbox.', 'success');
+      } else {
+        showFlash(data.message || 'Failed to send code.', 'error');
+      }
+    } catch (err) {
+      showFlash('Something went wrong.', 'error');
+    }
+  };
+
+  const submitVerification = async (type) => {
+    const code = document.getElementById(type + 'Code').value;
+    if (!code || code.length < 6) {
+      showFlash('Please enter the 6-digit code.', 'error');
+      return;
+    }
+    try {
+      const res  = await fetch('/profile/verify', {
+        method : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body   : JSON.stringify({ type, code })
+      });
+      const data = await res.json();
+      if (data.success) {
+        window.location.reload();
+      } else {
+        showFlash(data.message || 'Invalid code. Try again.', 'error');
+      }
+    } catch (err) {
+      showFlash('Something went wrong.', 'error');
+    }
+  };
+
+const showFlash = (message, type) => {
+  // create container if not exists
+  let container = document.querySelector('.flash-container');
+  if (!container) {
+    container           = document.createElement('div');
+    container.className = 'flash-container';
+    document.body.appendChild(container);
+  }
+
+  const div     = document.createElement('div');
+  div.className = `flash-message ${type}`;
+  div.innerHTML = (type === 'success' ? '✅ ' : '⚠️ ') + message;
+  container.appendChild(div);
+
+  setTimeout(() => {
+    div.style.opacity = '0';
+    setTimeout(() => div.remove(), 400);
+  }, 4000);
+};
+
+</script>
+</body>
+</html>

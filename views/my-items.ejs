@@ -1,0 +1,134 @@
+<%- include('partials/head') %>
+<body>
+<%- include('partials/navbar', { activePage: '' }) %>
+<%- include('partials/flash') %>
+
+<div class="dashboard-container">
+  <%- include('partials/sidebar', { activeSidebar: activeType === 'lost' ? 'lost' : activeType === 'found' ? 'found' : 'lost' }) %>
+
+  <main class="dashboard-content">
+
+    <div class="dashboard-header">
+      <div>
+        <h1 class="dashboard-title"><%= title %></h1>
+        <p style="color:var(--text-secondary);">
+          <%= activeType === 'lost' ? 'Items you have reported as lost' : activeType === 'found' ? 'Items you have reported as found' : 'All items you have reported' %>
+        </p>
+      </div>
+      <div class="dashboard-actions">
+        <a href="/report-lost"  class="btn-primary">+ Report Lost</a>
+        <a href="/report-found" class="btn-secondary">+ Report Found</a>
+      </div>
+    </div>
+
+    <!-- tab switcher -->
+    <div style="display:flex;gap:12px;margin-bottom:30px;">
+      <a href="/my-items?type=lost"
+        class="<%= activeType === 'lost' ? 'btn-primary' : 'btn-secondary' %>"
+        style="padding:10px 24px;">
+        📱 Lost Items
+      </a>
+      <a href="/my-items?type=found"
+        class="<%= activeType === 'found' ? 'btn-primary' : 'btn-secondary' %>"
+        style="padding:10px 24px;">
+        ✨ Found Items
+      </a>
+    </div>
+
+    <!-- items grid -->
+    <div style="background:var(--bg-card);backdrop-filter:blur(20px);padding:30px;border-radius:var(--radius-lg);box-shadow:0 10px 30px rgba(0,0,0,0.4);border:1px solid var(--border-primary);">
+
+      <% if (items.length === 0) { %>
+
+        <!-- empty state -->
+        <div style="text-align:center;padding:60px 20px;">
+          <div style="font-size:64px;margin-bottom:20px;">
+            <%= activeType === 'lost' ? '📭' : '📬' %>
+          </div>
+          <h3 style="margin-bottom:10px;">
+            No <%= activeType === 'lost' ? 'lost' : 'found' %> items reported yet
+          </h3>
+          <p style="color:var(--text-medium);margin-bottom:24px;">
+            <%= activeType === 'lost' ? 'Report a lost item to get started' : 'Report a found item to help someone' %>
+          </p>
+          <a href="/report-<%= activeType === 'lost' ? 'lost' : 'found' %>" class="btn-primary">
+            + Report <%= activeType === 'lost' ? 'Lost' : 'Found' %> Item
+          </a>
+        </div>
+
+      <% } else { %>
+
+        <div class="items-grid">
+          <% items.forEach(item => { %>
+            <div class="item-card" data-id="<%= item.id %>">
+
+              <div class="item-image"><%= item.icon %></div>
+
+              <div class="item-content">
+                <div class="item-header">
+                  <div><h3 class="item-title"><%= item.name %></h3></div>
+                  <span class="item-badge <%= item.type %>">
+                    <%= item.type === 'lost' ? 'Lost' : 'Found' %>
+                  </span>
+                </div>
+
+                <div class="item-meta">
+                  <div class="meta-item">
+                    <span class="meta-icon">📍</span>
+                    <span><%= item.location %></span>
+                  </div>
+                  <div class="meta-item">
+                    <span class="meta-icon">📅</span>
+                    <span><%= new Date(item.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) %></span>
+                  </div>
+                  <!-- show status -->
+                  <div class="meta-item">
+                    <span class="meta-icon">🔖</span>
+                    <span style="text-transform:capitalize;"><%= item.status %></span>
+                  </div>
+                </div>
+
+                <p class="item-description">
+                  <%= item.description.length > 80 ? item.description.substring(0,80)+'...' : item.description %>
+                </p>
+
+                <div class="item-footer">
+
+                  <!-- view details -->
+                  <a href="/items/<%= item.id %>" class="btn-primary">View</a>
+
+                  <!-- edit button - only for active items -->
+                  <% if (item.status === 'active') { %>
+                    <a href="/items/<%= item.id %>/edit" class="btn-secondary" style="cursor:pointer;">✏️ Edit</a>
+                  <% } %>
+
+                  <!-- resolve button - only for active items -->
+                  <% if (item.status === 'active') { %>
+                    <form action="/items/<%= item.id %>/resolve" method="POST" style="display:inline;">
+                      <button type="submit" class="btn-secondary" style="cursor:pointer;border:none;">✅ Resolve</button>
+                    </form>
+                  <% } %>
+
+                  <!-- delete button -->
+                  <form action="/items/<%= item.id %>/delete" method="POST" style="display:inline;"
+                        onsubmit="return confirm('Are you sure you want to delete this item?')">
+                    <button type="submit" class="btn-secondary" style="cursor:pointer;border:none;color:var(--danger-color);">🗑</button>
+                  </form>
+
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+
+      <% } %>
+
+    </div>
+
+  </main>
+</div>
+
+<%- include('partials/footer') %>
+<script src="/js/app.js"></script>
+</body>
+</html>

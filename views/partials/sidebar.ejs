@@ -1,0 +1,50 @@
+<aside class="sidebar">
+  <ul class="sidebar-menu">
+    <li class="sidebar-item">
+      <a href="/dashboard" class="sidebar-link <%= typeof activeSidebar !== 'undefined' && activeSidebar === 'dashboard' ? 'active' : '' %>">
+        <span class="sidebar-icon">📊</span> Dashboard
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/my-items?type=lost" class="sidebar-link <%= typeof activeSidebar !== 'undefined' && activeSidebar === 'lost' ? 'active' : '' %>">
+        <span class="sidebar-icon">📱</span> My Lost Items
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/my-items?type=found" class="sidebar-link <%= typeof activeSidebar !== 'undefined' && activeSidebar === 'found' ? 'active' : '' %>">
+        <span class="sidebar-icon">✨</span> My Found Items
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/matches" class="sidebar-link <%= typeof activeSidebar !== 'undefined' && activeSidebar === 'matches' ? 'active' : '' %>">
+        <span class="sidebar-icon">🎯</span> Matches
+        <span style="background:var(--primary-color);color:white;padding:2px 8px;border-radius:12px;font-size:12px;margin-left:auto;">2</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/messages" class="sidebar-link <%= typeof activeSidebar !== 'undefined' && activeSidebar === 'messages' ? 'active' : '' %>">
+        <span class="sidebar-icon">💬</span> Messages
+        <span style="background:var(--primary-color);color:white;padding:2px 8px;border-radius:12px;font-size:12px;margin-left:auto;">3</span>
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/notifications" class="sidebar-link <%= typeof activeSidebar !== 'undefined' && activeSidebar === 'notifications' ? 'active' : '' %>">
+        <span class="sidebar-icon">🔔</span> Notifications
+      </a>
+    </li>
+    <li class="sidebar-item" style="margin-top:30px;">
+      <a href="/report-lost"  class="sidebar-link"><span class="sidebar-icon">➕</span> Report Lost</a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/report-found" class="sidebar-link"><span class="sidebar-icon">✅</span> Report Found</a>
+    </li>
+    <li class="sidebar-item" style="margin-top:30px;">
+      <a href="/profile"   class="sidebar-link <%= typeof activeSidebar !== 'undefined' && activeSidebar === 'profile' ? 'active' : '' %>">
+        <span class="sidebar-icon">👤</span> Profile
+      </a>
+    </li>
+    <li class="sidebar-item">
+      <a href="/settings" class="sidebar-link"><span class="sidebar-icon">⚙️</span> Settings</a>
+    </li>
+  </ul>
+</aside>
