@@ -138,6 +138,7 @@
               </p>
 
               <!-- action buttons -->
+              <!-- action buttons -->
               <div class="item-footer">
 
                 <!-- view full item detail page -->
@@ -145,11 +146,19 @@
 
                 <!-- show different button depending on item type -->
                 <% if (item.type === 'lost') { %>
-                  <!-- user can claim they found this lost item -->
-                  <a href="/items/<%= item.id %>" class="btn-secondary">I Found This</a>
+                  <!-- user clicked I Found This on a lost item → redirect to report-found with source ID -->
+                  <a href="/report-found?sourceLostId=<%= item.id %>"
+                     class="btn-secondary"
+                     onclick="return confirm('Please submit the found item details for verification. We\'ll compare your report with this lost item.')">
+                    ✅ I Found This
+                  </a>
                 <% } else { %>
-                  <!-- user can contact the person who found this item -->
-                  <a href="/items/<%= item.id %>" class="btn-secondary">Contact Finder</a>
+                  <!-- user clicked This May Be Mine on a found item → redirect to report-lost with source ID -->
+                  <a href="/report-lost?sourceFoundId=<%= item.id %>"
+                     class="btn-secondary"
+                     onclick="return confirm('Please submit your lost item details for verification. We\'ll compare your report with this found item.')">
+                    🔍 This May Be Mine
+                  </a>
                 <% } %>
 
               </div>

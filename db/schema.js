@@ -7,7 +7,7 @@ import {
   timestamp,    // date and time           (like Date)
   serial,       // auto-incrementing ID    (1, 2, 3, 4 ...)
   mysqlEnum,    // one of a fixed set of values (like enum in Mongoose)
-  decimal       // number with decimal places (for reward amount)
+  decimal,bigint      // number with decimal places (for reward amount)
 } from 'drizzle-orm/mysql-core';
 
 // ── USERS TABLE ───────────────────────────────────────────────────────────────
@@ -155,3 +155,49 @@ export const passwordResets = mysqlTable('password_resets', {
   createdAt: timestamp('created_at').defaultNow(),
 });
 
+
+//making a table for the matching funcationality
+
+export const matches = mysqlTable('matches', {
+  id           : serial('id').primaryKey(),
+  lostItemId   : bigint('lost_item_id',  { mode: 'number', unsigned: true }).notNull().references(() => items.id, { onDelete: 'cascade' }),
+  foundItemId  : bigint('found_item_id', { mode: 'number', unsigned: true }).notNull().references(() => items.id, { onDelete: 'cascade' }),
+  lostUserId   : int('lost_user_id').notNull(),
+  foundUserId  : int('found_user_id').notNull(),
+  lostItemName : varchar('lost_item_name',  { length: 100 }).notNull(),
+  foundItemName: varchar('found_item_name', { length: 100 }).notNull(),
+  score        : int('score').notNull(),
+  status       : mysqlEnum('status', [
+    'potential', 'verification_pending', 'verification_failed',
+    'request_pending', 'request_accepted', 'request_rejected', 'connected'
+  ]).default('potential'),
+  createdAt    : timestamp('created_at').defaultNow(),
+});
+
+export const connectionRequests = mysqlTable('connection_requests', {
+  id        : serial('id').primaryKey(),
+  matchId   : bigint('match_id', { mode: 'number', unsigned: true }).notNull().references(() => matches.id, { onDelete: 'cascade' }),
+  fromUserId: int('from_user_id').notNull(),
+  toUserId  : int('to_user_id').notNull(),
+  status    : mysqlEnum('status', ['pending', 'accepted', 'rejected']).default('pending'),
+  createdAt : timestamp('created_at').defaultNow(),
+});
+
+export const matchVerificationAttempts = mysqlTable('match_verification_attempts', {
+  id       : serial('id').primaryKey(),
+  matchId  : bigint('match_id', { mode: 'number', unsigned: true }).notNull().references(() => matches.id, { onDelete: 'cascade' }),
+  userId   : int('user_id').notNull(),
+  attempts : int('attempts').default(0),
+  createdAt: timestamp('created_at').defaultNow(),
+});
+
+export const itemVerificationQuestions = mysqlTable('item_verification_questions', {
+  id       : serial('id').primaryKey(),
+  itemId   : bigint('item_id', { mode: 'number', unsigned: true }).notNull().references(() => items.id, { onDelete: 'cascade' }),
+  userId   : int('user_id').notNull(),
+  question1: varchar('question1', { length: 255 }).default(''),
+  answer1  : varchar('answer1',   { length: 255 }).default(''),
+  question2: varchar('question2', { length: 255 }).default(''),
+  answer2  : varchar('answer2',   { length: 255 }).default(''),
+  createdAt: timestamp('created_at').defaultNow(),
+});

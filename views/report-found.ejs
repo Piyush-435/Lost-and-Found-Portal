@@ -3,17 +3,27 @@
 <%- include('partials/navbar', { activePage: '' }) %>
 <% editing = typeof editing !== 'undefined' ? editing : false; %>
 <% item    = typeof item    !== 'undefined' ? item    : {};    %>
+<% sourceLostId = typeof sourceLostId !== 'undefined' ? sourceLostId : null; %>
 <%- include('partials/flash') %>
 
 <div class="form-container" style="max-width:700px;">
   <div class="form-header">
-    <!-- change title based on editing or creating -->
     <h1 class="form-title"><%= editing ? 'Edit Found Item' : 'Report Found Item' %></h1>
     <p class="form-subtitle"><%= editing ? 'Update the details of the found item' : 'Help return a lost item to its owner' %></p>
   </div>
 
-  <!-- change form action based on editing or creating -->
   <form action="<%= editing ? '/items/' + item.id + '/edit' : '/report-found' %>" method="POST">
+
+    <!-- hidden source ID if user came from browse or item-detail page -->
+    <% if (sourceLostId) { %>
+      <input type="hidden" name="sourceLostId" value="<%= sourceLostId %>" />
+      <!-- info banner shown when user clicked I Found This -->
+      <div style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-left:4px solid var(--primary-color);padding:16px;border-radius:var(--radius-md);margin-bottom:24px;">
+        <p style="font-size:14px;color:var(--text-medium);margin:0;">
+          ✅ You are submitting this report in response to a lost item. We'll compare your details with that report for verification.
+        </p>
+      </div>
+    <% } %>
 
     <div class="form-group">
       <label class="form-label" for="itemName">Item Name *</label>
@@ -28,7 +38,6 @@
       <select id="category" name="category" class="form-select" required>
         <option value="">Select a category</option>
         <% ['electronics','accessories','documents','bags','keys','clothing','jewelry','other'].forEach(cat => { %>
-          <!-- pre-select category when editing -->
           <option value="<%= cat %>" <%= editing && item.category === cat ? 'selected' : '' %>>
             <%= cat.charAt(0).toUpperCase() + cat.slice(1) %>
           </option>
@@ -41,7 +50,6 @@
         <label class="form-label" for="foundDate">Date Found *</label>
         <input type="date" id="foundDate" name="date" class="form-input" required
           max="<%= new Date().toISOString().split('T')[0] %>"
-          
           value="<%= editing ? new Date(item.date).toISOString().split('T')[0] : '' %>" />
       </div>
       <div class="form-group">
@@ -69,21 +77,19 @@
     <div class="form-group">
       <label class="form-label" for="currentLocation">Current Item Location *</label>
       <select id="currentLocation" name="currentLocation" class="form-select" required>
-        <!-- pre-select current location when editing -->
         <% ['with-me', 'police-station', 'lost-found-office', 'security-desk', 'other'].forEach(loc => { %>
           <option value="<%= loc %>"
             <%= editing && item.currentLocation === loc ? 'selected' : '' %>>
-            <% if (loc === 'with-me')           { %>I have it with me
-            <% } else if (loc === 'police-station')  { %>Turned in to Police Station
-            <% } else if (loc === 'lost-found-office') { %>Lost & Found Office
-            <% } else if (loc === 'security-desk')   { %>Security Desk
+            <% if (loc === 'with-me')              { %>I have it with me
+            <% } else if (loc === 'police-station')      { %>Turned in to Police Station
+            <% } else if (loc === 'lost-found-office')   { %>Lost & Found Office
+            <% } else if (loc === 'security-desk')       { %>Security Desk
             <% } else { %>Other (specify below)<% } %>
           </option>
         <% }) %>
       </select>
     </div>
 
-    <!-- other location input - shown if currentLocation is 'other' -->
     <div class="form-group" id="otherLocationGroup"
       style="display:<%= editing && item.currentLocation === 'other' ? 'block' : 'none' %>;">
       <label class="form-label" for="otherLocation">Specify Location</label>
@@ -100,7 +106,6 @@
       </select>
     </div>
 
-    <!-- Additional Info checkboxes - pre-checked when editing -->
     <div class="form-group">
       <label class="form-label">Additional Information</label>
       <div style="display:flex;flex-direction:column;gap:12px;">
@@ -121,7 +126,16 @@
         </label>
       </div>
     </div>
-
+    <div class="form-group">
+      <label class="form-label">Verification Questions <strong>(max two questions)</strong> <span style="font-size:12px;color:var(--text-medium);">(Hidden from public)</span></label>
+      <p style="font-size:14px;color:var(--text-medium);margin-bottom:12px;">
+        Add security questions to verify the rightful owner. These won't be visible to others.
+      </p>
+      <input type="text" name="question1" class="form-input" placeholder="Question 1: e.g., What color is the phone case?" style="margin-bottom:12px;" />
+      <input type="text" name="answer1"   class="form-input" placeholder="Answer 1" style="margin-bottom:12px;" />
+      <input type="text" name="question2" class="form-input" placeholder="Question 2: e.g., What brand is the item?" style="margin-bottom:12px;" />
+      <input type="text" name="answer2"   class="form-input" placeholder="Answer 2" />
+    </div>
     <div style="background:var(--bg-light);padding:16px;border-radius:var(--radius-md);margin-bottom:24px;">
       <p style="font-size:14px;color:var(--text-medium);margin-bottom:12px;">
         <strong>✨ Thank you for being a Good Samaritan!</strong>
@@ -131,7 +145,6 @@
       </p>
     </div>
 
-    <!-- change button text based on editing or creating -->
     <button type="submit" class="form-button btn-secondary">
       <%= editing ? 'Update Found Item' : 'Submit Found Report' %>
     </button>
@@ -146,7 +159,6 @@
 <%- include('partials/footer') %>
 <script src="/js/app.js"></script>
 <script>
-  // show/hide other location input
   document.getElementById('currentLocation').addEventListener('change', function() {
     document.getElementById('otherLocationGroup').style.display = this.value === 'other' ? 'block' : 'none';
   });
