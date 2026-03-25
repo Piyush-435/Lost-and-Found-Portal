@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1773400879525,
-      "tag": "0000_woozy_taskmaster",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1773480409292,
-      "tag": "0001_bouncy_emma_frost",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1773482218641,
-      "tag": "0002_burly_maximus",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1773571783015,
-      "tag": "0003_bizarre_layla_miller",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1773640768145,
-      "tag": "0004_simple_deathbird",
+      "when": 1774246400730,
+      "tag": "0000_worthless_christian_walker",
       "breakpoints": true
     }
   ]

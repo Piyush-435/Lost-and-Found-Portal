@@ -1,0 +1,96 @@
+<%- include('partials/head') %>
+<body>
+<%- include('partials/navbar', { activePage: '' }) %>
+<%- include('partials/flash') %>
+
+<div class="dashboard-container">
+  <%- include('partials/sidebar', { activeSidebar: 'matches' }) %>
+
+  <main class="dashboard-content">
+
+    <div class="dashboard-header">
+      <div>
+        <h1 class="dashboard-title">Ownership Verification</h1>
+        <p style="color:var(--text-secondary);">Answer the questions below to verify your claim</p>
+      </div>
+    </div>
+
+    <!-- attempts remaining warning -->
+    <div style="background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-left:4px solid var(--warning-color);padding:16px 24px;border-radius:var(--radius-lg);margin-bottom:24px;">
+      <p style="font-size:14px;color:var(--text-medium);margin:0;">
+        ⚠️ You have <strong><%= attemptsLeft %></strong> attempt<%= attemptsLeft !== 1 ? 's' : '' %> remaining.
+        Do not close this page until you submit.
+      </p>
+    </div>
+
+    <!-- verification form card -->
+    <div style="background:var(--bg-card);backdrop-filter:blur(20px);padding:40px;border-radius:var(--radius-lg);box-shadow:0 10px 30px rgba(0,0,0,0.4);border:1px solid var(--border-primary);">
+
+      <div style="text-align:center;margin-bottom:32px;">
+        <span style="font-size:48px;">🔐</span>
+        <h2 style="font-size:22px;font-weight:700;margin-top:12px;color:var(--text-primary);">
+          Answer Verification Questions
+        </h2>
+        <p style="color:var(--text-secondary);margin-top:8px;">
+          These questions were set by the other user. Answer them correctly to proceed.
+        </p>
+      </div>
+
+      <form action="/matches/<%= match.id %>/verify" method="POST">
+
+        <!-- question 1 -->
+        <% if (questions.question1) { %>
+          <div class="form-group">
+            <label class="form-label">Question 1: <%= questions.question1 %></label>
+            <input
+              type="text"
+              name="answer1"
+              class="form-input"
+              placeholder="Your answer"
+              required
+              autocomplete="off"
+            />
+          </div>
+        <% } %>
+
+        <!-- question 2 -->
+        <% if (questions.question2) { %>
+          <div class="form-group">
+            <label class="form-label">Question 2: <%= questions.question2 %></label>
+            <input
+              type="text"
+              name="answer2"
+              class="form-input"
+              placeholder="Your answer"
+              required
+              autocomplete="off"
+            />
+          </div>
+        <% } %>
+
+        <div style="background:var(--bg-light);padding:16px;border-radius:var(--radius-md);margin-bottom:24px;">
+          <p style="font-size:13px;color:var(--text-medium);margin:0;">
+            🔒 Your answers are compared securely. No detailed feedback will be given about which answers are correct or incorrect.
+          </p>
+        </div>
+
+        <div style="display:flex;gap:12px;">
+          <button type="submit" class="btn-primary" style="flex:1;padding:14px;">
+            Submit Answers
+          </button>
+          <a href="/matches" class="btn-secondary" style="flex:1;text-align:center;padding:14px;">
+            Cancel
+          </a>
+        </div>
+
+      </form>
+
+    </div>
+
+  </main>
+</div>
+
+<%- include('partials/footer') %>
+<script src="/js/app.js"></script>
+</body>
+</html>

@@ -3,17 +3,27 @@
 <%- include('partials/navbar', { activePage: '' }) %>
 <% editing = typeof editing !== 'undefined' ? editing : false; %>
 <% item    = typeof item    !== 'undefined' ? item    : {};    %>
+<% sourceFoundId = typeof sourceFoundId !== 'undefined' ? sourceFoundId : null; %>
 <%- include('partials/flash') %>
 
 <div class="form-container" style="max-width:700px;">
   <div class="form-header">
-    <!-- change title based on editing or creating -->
     <h1 class="form-title"><%= editing ? 'Edit Lost Item' : 'Report Lost Item' %></h1>
     <p class="form-subtitle"><%= editing ? 'Update the details of your lost item' : 'Provide details about your lost item to help us find it' %></p>
   </div>
 
-  <!-- change form action based on editing or creating -->
   <form action="<%= editing ? '/items/' + item.id + '/edit' : '/report-lost' %>" method="POST">
+
+    <!-- hidden source ID if user came from browse or item-detail page -->
+    <% if (sourceFoundId) { %>
+      <input type="hidden" name="sourceFoundId" value="<%= sourceFoundId %>" />
+      <!-- info banner shown when user clicked This May Be Mine -->
+      <div style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.3);border-left:4px solid var(--primary-color);padding:16px;border-radius:var(--radius-md);margin-bottom:24px;">
+        <p style="font-size:14px;color:var(--text-medium);margin:0;">
+          🔍 You are submitting this report in response to a found item. We'll compare your details with that report for verification.
+        </p>
+      </div>
+    <% } %>
 
     <div class="form-group">
       <label class="form-label" for="itemName">Item Name *</label>
@@ -72,12 +82,10 @@
       </select>
     </div>
 
-    <!-- Reward Section -->
     <div class="form-group">
       <label class="form-label">Reward Offered (Optional)</label>
       <div style="display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;">
         <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
-          <!-- check the checkbox if reward exists when editing -->
           <input type="checkbox" id="offerReward" name="offerReward"
             <%= editing && item.reward && parseFloat(item.reward) > 0 ? 'checked' : '' %> />
           <span style="font-size:14px;color:var(--text-medium);">I want to offer a reward</span>
@@ -89,7 +97,6 @@
       </div>
     </div>
 
-    <!-- Verification Questions -->
     <div class="form-group">
       <label class="form-label">Verification Questions <strong>(max two questions)</strong> <span style="font-size:12px;color:var(--text-medium);">(Hidden from public)</span></label>
       <p style="font-size:14px;color:var(--text-medium);margin-bottom:12px;">
@@ -108,7 +115,6 @@
       </p>
     </div>
 
-    <!-- change button text based on editing or creating -->
     <button type="submit" class="form-button btn-primary">
       <%= editing ? 'Update Lost Item' : 'Submit Lost Report' %>
     </button>
@@ -123,7 +129,6 @@
 <%- include('partials/footer') %>
 <script src="/js/app.js"></script>
 <script>
-  // enable/disable reward amount when checkbox toggled
   const offerReward  = document.getElementById('offerReward');
   const rewardAmount = document.getElementById('rewardAmount');
 

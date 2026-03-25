@@ -1,0 +1,169 @@
+<%- include('partials/head') %>
+<body>
+<%- include('partials/navbar', { activePage: '' }) %>
+<%- include('partials/flash') %>
+
+<div class="dashboard-container">
+  <%- include('partials/sidebar', { activeSidebar: 'matches' }) %>
+
+  <main class="dashboard-content">
+
+    <div class="dashboard-header">
+      <div>
+        <h1 class="dashboard-title">Potential Matches</h1>
+        <p style="color:var(--text-secondary);">Items that may match your lost or found reports</p>
+      </div>
+    </div>
+
+    <% if (matches.length === 0) { %>
+
+      <div style="background:var(--bg-card);backdrop-filter:blur(20px);padding:60px 30px;border-radius:var(--radius-lg);box-shadow:0 10px 30px rgba(0,0,0,0.4);border:1px solid var(--border-primary);text-align:center;">
+        <div style="font-size:64px;margin-bottom:20px;">🎯</div>
+        <h3 style="margin-bottom:10px;color:var(--text-primary);">No potential matches yet</h3>
+        <p style="color:var(--text-medium);margin-bottom:24px;">
+          When a found item matches your lost report or vice versa, it will appear here.
+        </p>
+        <a href="/browse" class="btn-primary">Browse Items</a>
+      </div>
+
+    <% } else { %>
+
+      <div style="display:flex;flex-direction:column;gap:20px;">
+        <% matches.forEach(match => { %>
+
+          <div style="background:var(--bg-card);backdrop-filter:blur(20px);padding:24px;border-radius:var(--radius-lg);box-shadow:0 10px 30px rgba(0,0,0,0.4);border:1px solid var(--border-primary);">
+
+            <!-- match header -->
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <span style="font-size:32px;">🎯</span>
+                <div>
+                  <h3 style="font-size:18px;font-weight:700;color:var(--text-primary);">Potential Match Found</h3>
+                  <p style="font-size:13px;color:var(--text-tertiary);">
+                    <%= new Date(match.createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) %>
+                  </p>
+                </div>
+              </div>
+              <div style="background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.4);padding:6px 16px;border-radius:var(--radius-full);">
+                <span style="color:var(--primary-color);font-weight:700;font-size:14px;">Score: <%= match.score %></span>
+              </div>
+            </div>
+
+            <!-- two item cards side by side -->
+            <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;">
+
+              <!-- lost item -->
+              <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.2);padding:20px;border-radius:var(--radius-md);">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                  <span style="background:rgba(239,68,68,0.2);color:#ef4444;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;">LOST</span>
+                </div>
+                <h4 style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">
+                  <%= match.lostItemName %>
+                </h4>
+                <a href="/items/<%= match.lostItemId %>" class="btn-secondary" style="font-size:13px;padding:6px 14px;">
+                  View Details
+                </a>
+              </div>
+
+              <!-- match arrow -->
+              <div style="text-align:center;font-size:28px;">🔗</div>
+
+              <!-- found item -->
+              <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);padding:20px;border-radius:var(--radius-md);">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;">
+                  <span style="background:rgba(16,185,129,0.2);color:#10b981;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:600;">FOUND</span>
+                </div>
+                <h4 style="font-size:16px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">
+                  <%= match.foundItemName %>
+                </h4>
+                <a href="/items/<%= match.foundItemId %>" class="btn-secondary" style="font-size:13px;padding:6px 14px;">
+                  View Details
+                </a>
+              </div>
+
+            </div>
+
+            <!-- action buttons -->
+            <div style="display:flex;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--border-primary);">
+
+              <!-- confirm match now opens modal instead of submitting directly -->
+              <button
+                class="btn-primary"
+                onclick="openVerifyModal('<%= match.id %>')"
+                style="border:none;cursor:pointer;">
+                ✅ Confirm Match
+              </button>
+
+              <form action="/matches/<%= match.id %>/reject" method="POST">
+                <button type="submit" class="btn-secondary" style="border:none;cursor:pointer;color:var(--danger-color);">
+                  ❌ Not a Match
+                </button>
+              </form>
+            </div>
+
+          </div>
+
+        <% }) %>
+      </div>
+
+    <% } %>
+
+  </main>
+</div>
+
+<!-- verification warning modal -->
+<div id="verifyModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:9999;display:none;align-items:center;justify-content:center;">
+  <div style="background:var(--bg-card);border:1px solid var(--border-primary);border-radius:var(--radius-xl);padding:40px;max-width:480px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.5);">
+
+    <!-- modal icon -->
+    <div style="text-align:center;margin-bottom:20px;">
+      <span style="font-size:56px;">🔐</span>
+    </div>
+
+    <!-- modal title -->
+    <h2 style="font-size:22px;font-weight:700;text-align:center;margin-bottom:12px;color:var(--text-primary);">
+      Ownership Verification Required
+    </h2>
+
+    <!-- modal message -->
+    <p style="color:var(--text-secondary);text-align:center;margin-bottom:32px;line-height:1.6;">
+      Before connecting, you must answer verification questions set by the other user.
+      This ensures only the rightful owner can claim the item.
+    </p>
+
+    <!-- modal buttons -->
+    <div style="display:flex;gap:12px;">
+      <!-- proceed redirects to verify page -->
+      <a id="proceedVerifyBtn" href="#" class="btn-primary" style="flex:1;text-align:center;padding:14px;">
+        Proceed to Verification
+      </a>
+      <!-- cancel closes modal -->
+      <button onclick="closeVerifyModal()" class="btn-secondary" style="flex:1;border:none;cursor:pointer;padding:14px;">
+        Cancel
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+<script src="/js/app.js"></script>
+<script>
+  // opens the modal and sets the proceed button href to correct verify URL
+  const openVerifyModal = (matchId) => {
+    document.getElementById('proceedVerifyBtn').href = `/matches/${matchId}/verify`;
+    document.getElementById('verifyModal').style.display = 'flex';
+  };
+
+  // closes the modal
+  const closeVerifyModal = () => {
+    document.getElementById('verifyModal').style.display = 'none';
+  };
+
+  // close modal if user clicks outside it
+  document.getElementById('verifyModal').addEventListener('click', function(e) {
+    if (e.target === this) closeVerifyModal();
+  });
+</script>
+</body>
+</html>

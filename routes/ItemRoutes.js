@@ -37,4 +37,18 @@ router.post('/items/:id/resolve', requireAuth, itemControllers.resolveItem);
 //creating a route for the edit of the reported items
 // edit item routes
 router.route('/items/:id/edit').get(requireAuth, itemControllers.getEditItem).post(requireAuth, itemControllers.postEditItem);
+
+//creating a route for the potential matches
+router.get('/matches', requireAuth, itemControllers.getMatches);
+router.post('/matches/:id/confirm',     requireAuth, itemControllers.confirmMatch);
+router.post('/matches/:id/reject',      requireAuth, itemControllers.rejectMatch);
+
+// verification flow
+router.get('/matches/:id/verify', requireAuth, itemControllers.getVerify);
+router.post('/matches/:id/verify', requireAuth, itemControllers.postVerify);
+
+//route for showing the connection page with status
+router.get('/connections',                   requireAuth, itemControllers.getConnections);
+router.post('/connections/:id/accept',       requireAuth, itemControllers.acceptRequest);
+router.post('/connections/:id/reject',       requireAuth, itemControllers.rejectRequest);
 export default router;

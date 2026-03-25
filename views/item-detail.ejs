@@ -96,14 +96,31 @@
 
       <!-- CTA - if user is logged in and user is NOT the item owner then show this -->
       <!-- ✅ MySQL: use .id instead of ._id -->
+<!-- CTA - if user is logged in and user is NOT the item owner then show this -->
       <% if (isLoggedIn && currentUser.id !== item.userId) { %>
         <div style="display:flex; gap:12px; flex-wrap:wrap;">
-          <button class="btn-primary" style="flex:1; padding:14px; border:none; cursor:pointer; font-size:16px;"
-                  onclick="alert('Messaging feature coming soon! Contact via: <%= item.contactMethod %>')">
-            <%= item.type === 'lost' ? '🙋 I Found This Item' : '📬 This is Mine!' %>
-          </button>
+
+          <% if (item.type === 'lost') { %>
+            <!-- user thinks they found this lost item → go to report-found with source ID -->
+            <a href="/report-found?sourceLostId=<%= item.id %>"
+               class="btn-primary"
+               style="flex:1; padding:14px; text-align:center; font-size:16px;"
+               onclick="return confirm('Please submit the found item details for verification. We\'ll compare your report with this lost item.')">
+              ✅ I Found This Item
+            </a>
+          <% } else { %>
+            <!-- user thinks this found item is theirs → go to report-lost with source ID -->
+            <a href="/report-lost?sourceFoundId=<%= item.id %>"
+               class="btn-primary"
+               style="flex:1; padding:14px; text-align:center; font-size:16px;"
+               onclick="return confirm('Please submit your lost item details for verification. We\'ll compare your report with this found item.')">
+              🔍 This May Be Mine
+            </a>
+          <% } %>
+
         </div>
-      <!-- otherwise show login prompt -->
+
+      <!-- show login prompt if not logged in -->
       <% } else if (!isLoggedIn) { %>
         <a href="/login" class="btn-primary" style="display:block; text-align:center; padding:14px; font-size:16px;">
           Login to Contact Reporter
