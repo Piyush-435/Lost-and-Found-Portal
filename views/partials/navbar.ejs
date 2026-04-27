@@ -9,10 +9,10 @@
       <a href="/browse" class="nav-link <%= typeof activePage !== 'undefined' && activePage === 'browse' ? 'active' : '' %>">Browse Items</a>
 
 <% if (isLoggedIn) { %>
-  <a href="/profile"   class="nav-link">👤 Profile</a>
-  <a href="/dashboard" class="nav-link">📊 Dashboard</a>
+  <a href="/profile"   class="nav-link"> Profile</a>
+  <a href="/dashboard" class="nav-link"> Dashboard</a>
   <form action="/logout" method="POST" style="margin:0;">
-    <button type="submit" class="nav-link" style="background:none;border:none;cursor:pointer;color:inherit;">🚪 Logout</button>
+    <button type="submit" class="nav-link" style="background:none;border:none;cursor:pointer;color:inherit;"> Logout</button>
   </form>
 <% } else { %>
   <a href="/login"    class="btn-primary"   id="loginBtn">Login</a>
